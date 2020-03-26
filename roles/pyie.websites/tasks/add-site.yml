@@ -1,0 +1,24 @@
+---
+- name: Create the parent directory
+  file:
+    path: "{{ www_root }}/{{ item.name }}/src"
+    state: directory
+    owner: www-data
+    group: www-data
+    recurse: true
+
+- name: "Create Docker for {{ item.name }}"
+  docker_container:
+    restart_policy: always
+    restart: true
+    recreate: true
+    pull: true
+    state: started
+    name: "{{ item.name }}"
+    image: nginx:alpine
+    env:
+      VIRTUAL_HOST: www.pycon.ie,pycon.ie
+      LETSENCRYPT_HOST: www.pycon.ie,pycon.ie
+      LETSENCRYPT_EMAIL: "{{ letsencrypt_contact }}"
+    volumes:
+      - "{{ www_root }}/{{ item.name }}/src:/usr/share/nginx/html:ro"

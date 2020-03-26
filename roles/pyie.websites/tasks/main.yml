@@ -1,0 +1,21 @@
+---
+- name: Create the vhosts directory
+  file:
+    name: "{{ item }}"
+    owner: www-data
+    group: www-data
+    recurse: true
+    state: directory
+  loop:
+    - "{{ www_root }}/proxy/vhosts"
+    - "{{ www_root }}/proxy/certs"
+
+- name: Install Nginx
+  include_tasks: install-nginx.yml
+
+- name: Install Letsencrypt nginx companion
+  include_tasks: install-letsencrypt-companion.yml
+
+- name: Create directories and docker container
+  include_tasks: add-site.yml
+  loop: "{{ pyie_hosts }}"

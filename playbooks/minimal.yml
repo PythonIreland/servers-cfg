@@ -1,0 +1,16 @@
+---
+- hosts: all
+  tasks:
+    - name: Install packages
+      apt:
+        update_cache: yes
+        state: present
+        name:
+          - neovim
+          - tmux
+          - htop
+
+    - name: Upgrade packages
+      apt:
+        name: "*"
+        state: latest

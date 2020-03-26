@@ -1,0 +1,11 @@
+---
+- hosts: all
+  vars:
+    www_root: /home/www
+    default_host: www.pycon.ie
+    pyie_hosts:
+      - name: www.pycon.ie
+        alias: pycon.ie
+
+  roles:
+    - pyie.websites

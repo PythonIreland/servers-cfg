@@ -1,0 +1,16 @@
+---
+- name: letsencrypt-nginx
+  docker_container:
+    restart_policy: always
+    restart: true
+    recreate: true
+    pull: true
+    state: started
+    name: letsencrypt-nginx
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "{{ www_root }}/proxy/certs:/etc/nginx/certs:rw"
+      - "{{ www_root }}/proxy/vhosts:/etc/nginx/vhost.d:rw"

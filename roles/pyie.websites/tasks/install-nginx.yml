@@ -1,0 +1,20 @@
+---
+- name: nginx-proxy
+  docker_container:
+    restart_policy: always
+    restart: true
+    recreate: true
+    pull: true
+    state: started
+    name: nginx-proxy
+    image: jwilder/nginx-proxy
+    env:
+      DEFAULT_HOST: "{{ default_host }}"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - "{{ www_root }}/proxy/certs:/etc/nginx/certs:ro"
+      - "{{ www_root }}/proxy/vhosts:/etc/nginx/vhost.d:ro"
+      - /usr/share/nginx/html
